@@ -7,10 +7,10 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
         Render {
             color: ColorPair::new(WHITE, BLACK),
             glyph: to_cp437('@'),
-        }
+        },
     ));
 }
- 
+
 pub fn spawn_monster(ecs: &mut World, rng: &mut RandomNumberGenerator, pos: Point) {
     ecs.push((
         Enemy,
@@ -23,6 +23,7 @@ pub fn spawn_monster(ecs: &mut World, rng: &mut RandomNumberGenerator, pos: Poin
                 2 => to_cp437('o'),
                 _ => to_cp437('g'),
             },
-        }
+        },
+        MovingRandomly,
     ));
 }

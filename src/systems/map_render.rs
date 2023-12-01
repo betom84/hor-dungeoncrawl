@@ -5,7 +5,7 @@ pub fn map_render(#[resource] map: &Map, #[resource] camera: &Camera) {
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(0);
 
-    for y in camera.top_y..camera.bottom_y {
+    for y in camera.top_y..=camera.bottom_y {
         for x in camera.left_x..camera.right_x {
             let tile_idx = map_idx(x, y);
             if tile_idx.is_none() {
