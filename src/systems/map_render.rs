@@ -3,7 +3,12 @@ use crate::prelude::*;
 #[system]
 #[read_component(FieldOfView)]
 #[read_component(Player)]
-pub fn map_render(ecs: &SubWorld, #[resource] map: &Map, #[resource] camera: &Camera) {
+pub fn map_render(
+    ecs: &SubWorld,
+    #[resource] map: &Map,
+    #[resource] camera: &Camera,
+    #[resource] theme: &Box<dyn MapTheme>,
+) {
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(0);
 
@@ -24,11 +29,7 @@ pub fn map_render(ecs: &SubWorld, #[resource] map: &Map, #[resource] camera: &Ca
 
             if let Some(tile) = map.tiles.get(tile_idx.expect("can't be none")) {
                 let offset = Point::new(camera.left_x, camera.top_y);
-
-                let glyph = match tile {
-                    TileType::Wall => to_cp437('#'),
-                    TileType::Floor => to_cp437('.'),
-                };
+                let glyph = theme.tile_to_render(*tile);
 
                 let tint = if player_fov.visible_tiles.contains(&pt) {
                     WHITE
