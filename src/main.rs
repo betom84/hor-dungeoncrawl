@@ -60,11 +60,9 @@ impl State {
         spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
 
         map_builder
-            .rooms
+            .monster_spawns
             .iter()
-            .skip(1)
-            .map(Rect::center)
-            .for_each(|pos| spawn_monster(&mut self.ecs, &mut rng, pos));
+            .for_each(|pos| spawn_monster(&mut self.ecs, &mut rng, *pos));
 
         self.resources = Resources::default();
         self.resources.insert(map_builder.map);
