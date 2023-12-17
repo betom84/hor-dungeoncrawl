@@ -59,14 +59,10 @@ impl State {
         let mut map_builder = MapBuilder::new(&mut rng);
 
         spawn_player(&mut self.ecs, map_builder.player_start);
+        spawn_level(&mut self.ecs, &mut rng, 0, &map_builder.monster_spawns);
 
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rng, *pos));
 
         self.resources = Resources::default();
         self.resources.insert(map_builder.map);
@@ -178,17 +174,19 @@ impl State {
                 pos.y = map_builder.player_start.y;
             });
 
+        spawn_level(
+            &mut self.ecs,
+            &mut rng,
+            map_level as usize,
+            &map_builder.monster_spawns,
+        );
+
         if map_level == 2 {
             spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
         } else {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;
         }
-
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rng, *pos));
 
         self.resources = Resources::default();
         self.resources.insert(map_builder.map);
