@@ -6,6 +6,7 @@ const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
 pub enum TileType {
     Wall,
     Floor,
+    Exit,
 }
 
 pub struct Map {
@@ -24,7 +25,7 @@ impl Map {
     pub fn can_enter_tile(&self, p: Point) -> bool {
         if let Some(idx) = map_idx(p.x, p.y) {
             if let Some(&tile) = self.tiles.get(idx) {
-                return tile == TileType::Floor;
+                return tile != TileType::Wall;
             }
         }
 
